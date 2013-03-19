@@ -1,5 +1,5 @@
 /**
- * Library to queue up asynchrous events and then play them. Built on top of the cujojs's when  CommonJS Promises/A library.
+ * Library to queue up asynchronous  events and then play them. Built on top of the cujojs's when  CommonJS Promises/A library.
  * Primary use case to build web application tutorials or step by step guides.
  * @author Daniel Georges
  */
@@ -10,8 +10,8 @@ define(['when/when', 'when/pipeline', 'when/parallel'], function(when, pipeline,
     /**
      * The parent class of playlistjs unit of work.
      *
-     * Inherite this prototype to make your own Action. Your action must have an execute method
-     * which will be called when playlistjs has determinied it should play your action. Your
+     * Inherit this prototype to make your own Action. Your action must have an execute method
+     * which will be called when playlistjs has determined it should play your action. Your
      * execute method can do whatever it want synchronously or asynchronously. As long as either
      * complete or fail are eventually called to indicate the end of the action.
      */
@@ -150,7 +150,7 @@ define(['when/when', 'when/pipeline', 'when/parallel'], function(when, pipeline,
     }
 
     /**
-     * Given a playlist discriptor will create the playlist instance.
+     * Given a playlist descriptor will create the playlist instance.
      *
      * @param {[Array || Object]} descriptor - A collection of Objects that describe the actions you wish to invoke.
      * Each Object in the collection can be an instance of Actionable or a simple JSON object of the Actionable.
