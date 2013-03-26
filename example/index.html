@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<!-- saved from url=(0067)http://twitter.github.com/bootstrap/examples/marketing-narrow.html# -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>playlistjs example</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Daniel Georges">
+
+    <!-- Le styles -->
+    <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 20px;
+        padding-bottom: 40px;
+      }
+
+      /* Custom container */
+      .container-narrow {
+        margin: 0 auto;
+        max-width: 700px;
+      }
+      .container-narrow > hr {
+        margin: 30px 0;
+      }
+
+      /* Main marketing message and sign up button */
+      .jumbotron {
+        margin: 60px 0;
+        text-align: center;
+      }
+      .jumbotron h1 {
+        font-size: 72px;
+        line-height: 1;
+      }
+      .jumbotron .btn {
+        font-size: 21px;
+        padding: 14px 24px;
+      }
+
+      /* Supporting marketing content */
+      .marketing {
+        margin: 60px 0;
+      }
+      .marketing p + h4 {
+        margin-top: 28px;
+      }
+      .nav li a:hover,
+      .nav li a:focus {
+        background-color: initial;
+      }
+    </style>
+    <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- jquery ui css -->
+    <link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="stylesheet">
+    <link href="../actions/custom-actions.css" rel="stylesheet">
+
+  </head>
+
+  <body screen_capture_injected="true">
+
+    <div class="container-narrow">
+
+      <div class="masthead">
+        <ul class="nav nav-pills pull-right">
+          <li><a href="https://github.com/dgeorges/playlistjs/archive/master.zip">Download</a></li>
+          <li><a href="https://github.com/dgeorges/playlistjs">Github</a></li>
+          <li><a href="https://twitter.com/dgeorges1">@dgeorges1</a></li>
+        </ul>
+        <h3 class="muted"> playlistjs</h3>
+      </div>
+
+      <hr>
+
+      <div class="jumbotron">
+        <h1>Build web tutorials in seconds!</h1>
+        <p class="lead">Unlock the full potential of you application by training your users to use your application the way it was ment to be used.</p>
+        <div class="btn btn-large btn-success" onClick="executeDemo()">See Demo</div>
+      </div>
+
+      <hr>
+
+      <div class="row-fluid marketing">
+        <div class="span6">
+
+          <h4>Actions</h4>
+          <select id="action-list" size="10" onClick="">
+          </select>
+          <br/>
+          <button type="button" onClick="playSelectedAction()">See Action</button>
+          <button type="button" id="addActionToPlaylist" onClick="addActionToPlaylist()">Add To playlist</button>
+
+          <br/><br/>
+          <h4>How does it work?</h4>
+          <p>playlistjs is a library that allows you to order the execution of actions. You can use some of the already created actions or create your own to build a playlist. Actions are free to do whatever you want and can be used with whatever library you like. Give it a try! </p>
+
+        </div>
+
+        <div class="span6">
+          <h4>Playlist Descriptor</h4>
+          <textarea id="playlist" rows="8" style="height:170px;width:100%"></textarea>
+          <br/>
+          <button type="button" onClick="executePlaylist()">Execute</button>
+
+          <br/><br/>
+          <h4>Features</h4>
+          <ul>
+            <li> framework agnostic </li>
+            <li> extensible </li>
+            <li> easily customizable </li>
+            <li> simple </li>
+          </ul>
+
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="footer">
+        <p>&copy; 2013 - <a href="#" target="_blank">Daniel Georges</a></p>
+      </div>
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- playlistjs -->
+    <script src="../lib/when-1.8.1/when.js"></script>
+    <script src="../lib/when-1.8.1/pipeline.js"></script>
+    <script src="../lib/when-1.8.1/parallel.js"></script>
+    <script src="../playlist.js"></script>
+
+    <!-- jquery -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+    <!-- jquery ui-->
+    <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+
+    <!-- twitter bootstrap -->
+    <script src="http://twitter.github.com/bootstrap/assets/js/bootstrap.min.js"></script>
+
+    <!-- playlistjs actions -->
+    <script src="../actions/twitter-bootstrap-actions.js"></script>
+    <script src="../actions/jquery-actions.js"></script>
+    <script src="../actions/custom-actions.js"></script>
+
+
+    <script type="text/javascript">
+
+    var actions = {
+        "modal": {
+            actionName: "modal",
+            options: {
+                closeable: true,
+                dismissBtnText: "Next",
+                contentProvider: {
+                    getHeader: function () {
+                        return $("<p/>", {"text": "sample modal body"});
+                    },
+                    getBody: function () {
+                        return $("<p/>", {"text": "sample modal body"});
+                    },
+                    getFooter: function () {
+                        return $("<p/>", {"text": "sample modal body"});
+                    }
+                },
+                modalOptions: {
+                    keyboard: true
+                }
+            }
+        },
+        "popover": {
+            actionName: "popover",
+            options: {
+                target: "#addActionToPlaylist",
+                closeable: true,
+                //closeTimeout: 5000,
+                popoverOptions: {
+                    //selector: ".single-actions",
+                    placement: "top",
+                    html: true,
+                    //trigger: "hover",
+                    title: "title",
+                    content: "If you like this action add it to your playlist",
+                    container: "body"
+                }
+            }
+        },
+        "alert": {
+            actionName: "alert",
+            options: {
+                target: "body",
+                closeable: true,
+                closeTimeout: 5000,
+                class: "alert-error",
+                contentProvider: "This is an alert"
+            }
+        },
+        "dialog": {
+            actionName: "dialog",
+            options: {
+                content:"Welcome to my tutorial of playlistjs",
+                dialogOptions: {
+                    //appendTo:
+                    autoOpen: true,
+
+                    buttons: [{
+                        text: "Next",
+                        click: function() {
+                            $(this).dialog( "close" );
+                        }
+                    }],
+                    closeOnEscape: true,
+                    closeText: "closeText",
+                    //dialogClass: ""
+                    draggable: true,
+                    //hide: "explode",
+                    modal: false,
+                    //position
+                    resizable: true,
+                    //show:
+                    title: "Welcome title"
+                }
+            }
+        },
+        "notice": {
+            actionName: "notice",
+            options: {
+                content: "this is a sample notice",
+                waitTime: 2000,
+                "class": "achievement"
+            }
+        },
+        "wait": {
+            actionName: "notice",
+            options: {
+                timeout:2000
+            }
+        }
+    };
+
+    (function () {
+        var actionList = $("#action-list");
+        Object.keys(Playlist.getActions()).forEach(function (actionName) {
+            actionList.append($("<option/>", {"value": actionName}).text(actionName));
+        });
+    }());
+
+    function playSelectedAction () {
+        var actionName = document.querySelector("#action-list").value;
+        var actionDescriptor = actions[actionName];
+        var playlist = Playlist.createPlaylist([actionDescriptor]);
+        playlist.play();
+    }
+
+    function addActionToPlaylist () {
+        var actionName = document.querySelector("#action-list").value;
+        var actionDescriptor = actions[actionName];
+        var currentPlaylistDescriptor = document.querySelector("#playlist").value;
+        var newDescriptor = !!currentPlaylistDescriptor ? JSON.parse(currentPlaylistDescriptor) || []: [];
+        newDescriptor.push(actionDescriptor);
+        document.querySelector("#playlist").value = JSON.stringify(newDescriptor);
+    }
+
+    function executePlaylist () {
+        var demoDescriptor = document.querySelector("#playlist").value;
+        var playlist = Playlist.createPlaylist(JSON.parse(demoDescriptor));
+        playlist.play();
+    }
+
+    function executeDemo () {
+        var demoDescriptor = [
+        ];
+
+        var playlist = Playlist.createPlaylist(demoDescriptor);
+        //playlist.play();
+    }
+    </script>
+
+
+</body></html>
