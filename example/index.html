@@ -88,7 +88,7 @@
           <select id="action-list" size="10" onClick="">
           </select>
           <br/>
-          <button type="button" onClick="playSelectedAction()">See Action</button>
+          <button type="button" id="seeAction" onClick="playSelectedAction()">See Action</button>
           <button type="button" id="addActionToPlaylist" onClick="addActionToPlaylist()">Add To playlist</button>
 
           <br/><br/>
@@ -272,10 +272,126 @@
 
     function executeDemo () {
         var demoDescriptor = [
+            {
+                actionName: "dialog",
+                options: {
+                    content:"Welcome to my tutorial of playlistjs",
+                    title: "Welcome",
+                    dialogOptions : {
+                        buttons: [{
+                            text: "Next",
+                            click: function() {
+                                $( this ).dialog( "close" );
+                            }
+                        }]
+                    }
+
+                }
+            },
+            {
+                actionName: "dialog",
+                options: {
+                    content:"playlistjs is a small library which you can create your own actions and string them together in a asynchronous control flow. It does this by using the concept of promises from the cujojs when library.",
+                    title: "What is playlistjs?",
+                    dialogOptions: {
+                        buttons: [{
+                            text: "Next",
+                            click: function() {
+                                $( this ).dialog( "close" );
+                            }
+                        }]
+                    }
+                }
+            },
+            {
+                actionName: "dialog",
+                options: {
+                    content:"This tutorial workflow is actually being controlled by playlistjs. This is one of the use cases playlistjs and admittedly the primary one for which it was created for. However I am sure others exist.",
+                    title: "Have you realized?",
+                    dialogOptions: {
+                        buttons: [{
+                            text: "Next",
+                            click: function() {
+                                $( this ).dialog( "close" );
+                            }
+                        }]
+                   }
+                }
+            },
+            {
+                actionName: "dialog",
+                options: {
+                    content:"Using playlistjs we can build Actions, such as this dialog screen and tie them together to create a tutorial. This test page was created to show you how.",
+                    title: "Lets get started",
+                    dialogOptions: {
+                        buttons: [{
+                            text: "Next",
+                            click: function() {
+                                $( this ).dialog( "close" );
+                            }
+                        }]
+                    }
+                }
+            },
+            {
+                actionName: "popover",
+                options: {
+                    target: "#action-list",
+                    closeable: true,
+                    popoverId: "1234",
+                    popoverOptions: {
+                        placement: "top",
+                        html: true,
+                        trigger: "manual",
+                        content: "This is a list of possible actions. That have been created so far. <br/> <button class='btn playlistjs-complete' data-popover-Id='1234'> Next</button> ",
+                        container: "body"
+                    }
+                }
+            },
+            {
+                "popoverSeeActionButton": {
+                    actionName: "popover",
+                    options: {
+                        target: "#seeAction",
+                        closeable: true,
+                        popoverId: "12345",
+                        popoverOptions: {
+                            placement: "bottom",
+                            html: true,
+                            trigger: "manual",
+                            content: "After selecting a action, click this button to see it.<br/> <button class='btn' data-popover-Id='12345'> ok </button> ",
+                            container: "body"
+                        }
+                    }
+                },
+                "popoverAddActionToPlaylistButton": {
+                    actionName: "popover",
+                    options: {
+                        target: "#addActionToPlaylist",
+                        closeable: true,
+                        popoverId: "123456",
+                        popoverOptions: {
+                            placement: "top",
+                            html: true,
+                            trigger: "manual",
+                            content: "Click this button to add it to your playlist. <br/> <button class='btn playlistjs-complete' data-popover-Id='123456'> Next</button> ",
+                            container: "body"
+                        }
+                    }
+                }
+            },
+            {
+                actionName: "notice",
+                options: {
+                    content: "Congratulations you've completed the playlistjs tutorial.",
+                    waitTime: 2000,
+                    "class": "achievement"
+                }
+            }
         ];
 
         var playlist = Playlist.createPlaylist(demoDescriptor);
-        //playlist.play();
+        playlist.play();
     }
     </script>
 

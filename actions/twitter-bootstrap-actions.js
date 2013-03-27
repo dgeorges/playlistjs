@@ -81,8 +81,9 @@ define(['playlist', 'jQuery'], function(Playlist, $) {
     /**
      * A playlistjs action that displays a twitter bootstrap popover and completes when the popover is hidden
      * or destroyed as described by http://twitter.github.com/bootstrap/javascript.html#popovers. Note: another
-     * way to close the popover is to call the close method or any click event that fire on any element in the
-     * popover that has the class 'close'.
+     * way to close the popover is bind any containing element with a attribute named 'data-popover-id'. When
+     * such an element is clicked it will close the popover and complete the actions. This is how the closeable
+     * options works, except that option is explicitly for the 'x' close button.
      *
      * @param {[Object]} options:
      *    target: [string] - required - css selector indicating the elements to display the popover on.
@@ -90,6 +91,9 @@ define(['playlist', 'jQuery'], function(Playlist, $) {
      *        which will hide the popover when pressed.
      *    closeTimeout: [number] - optional - if specified popover will automatically close after time has expired.
      *        completing the action.
+     *    popoverId: [string] set this to a unique value to identify this popover. If a click event is
+     *        triggered on an element within a popover bound with a data attribute named 'data-popover-id'
+     *        containing this id. It will close this popover and complete the actions.
      *    popoverOptions: [object] see http://twitter.github.com/bootstrap/javascript.html#popovers
      */
     function PopoverAction (options) {
@@ -101,16 +105,17 @@ define(['playlist', 'jQuery'], function(Playlist, $) {
         });
 
         function closeFn (event) {
-            if (this.dataset.popoverId === that._uuid) {
+            if (event.target.getAttribute('data-popover-id') === that._uuid) {
                 that.close();
-                $(document).off("click", ".popover .close", closeFn);
                 // take lister off.
+                $(document).off("click", ".popover", closeFn);
             }
         }
+        //TODO possibly restrict further to playlistjs-complete class
+        $(document).on("click", ".popover", closeFn);
 
-        $(document).on("click", ".popover .close", closeFn);
 
-        this._uuid = "" + Date.now();
+        this._uuid = options.popoverId || "" +  Date.now();
         this._widget = widget;
         this._popoverOptions = options.popoverOptions;
         this._options = options;
@@ -122,8 +127,12 @@ define(['playlist', 'jQuery'], function(Playlist, $) {
 
     PopoverAction.prototype.execute = function (value) {
         if (this._options.closeable && this._popoverOptions.html) {
-            var close = $("<div/>").append($("<a/>", {"class": "close", "html": "&times;", "data-popover-id": this._uuid})).html();
-            this._popoverOptions.title += close;
+            var close = $("<a/>", {"class": "close", "html": "&times;", "data-popover-id": this._uuid});
+            if (this._popoverOptions.title) {
+                this._popoverOptions.title += $("<div/>", {"data-popover-id": this._uuid}).append(close).html();
+            } else if (this._popoverOptions.content) {
+                this._popoverOptions.content += $("<div/>").append(close.css({'position': 'absolute', 'top':0, 'right': '2px', 'margin': '4px'})).html();
+            }
         }
 
         this._widget.popover(this._popoverOptions);
