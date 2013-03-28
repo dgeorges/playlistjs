@@ -10,18 +10,11 @@
     <!-- Le styles -->
     <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet">
     <style type="text/css">
-      body {
-        padding-top: 20px;
-        padding-bottom: 40px;
-      }
 
       /* Custom container */
       .container-narrow {
         margin: 0 auto;
         max-width: 700px;
-      }
-      .container-narrow > hr {
-        margin: 30px 0;
       }
 
       /* Main marketing message and sign up button */
@@ -79,7 +72,6 @@
         <div class="btn btn-large btn-success" onClick="executeDemo()">See Demo</div>
       </div>
 
-      <hr>
 
       <div class="row-fluid marketing">
         <div class="span6">
@@ -99,7 +91,7 @@
 
         <div class="span6">
           <h4>Playlist Descriptor</h4>
-          <textarea id="playlist" rows="8" style="height:170px;width:100%"></textarea>
+          <textarea id="playlist" rows="8" style="height:170px;width:90%"></textarea>
           <br/>
           <button type="button" onClick="executePlaylist()">Execute</button>
 
@@ -157,13 +149,13 @@
                 dismissBtnText: "Next",
                 contentProvider: {
                     getHeader: function () {
-                        return $("<p/>", {"text": "sample modal body"});
+                        return $("<p/>", {"text": "This is the modal Header"});
                     },
                     getBody: function () {
-                        return $("<p/>", {"text": "sample modal body"});
+                        return $("<p/>", {"text": "This is the modal body"});
                     },
                     getFooter: function () {
-                        return $("<p/>", {"text": "sample modal body"});
+                        return $("<p/>", {"text": "This is the modal Footer"});
                     }
                 },
                 modalOptions: {
@@ -182,8 +174,8 @@
                     placement: "top",
                     html: true,
                     //trigger: "hover",
-                    title: "title",
-                    content: "If you like this action add it to your playlist",
+                    title: "Popover title",
+                    content: "Popover Content. If you like this action add it to your playlist by clicking the add to playlist button",
                     container: "body"
                 }
             }
@@ -201,7 +193,7 @@
         "dialog": {
             actionName: "dialog",
             options: {
-                content:"Welcome to my tutorial of playlistjs",
+                content:"This is a dialog action. It can be modal and completes when user dismisses it",
                 dialogOptions: {
                     //appendTo:
                     autoOpen: true,
@@ -228,15 +220,17 @@
         "notice": {
             actionName: "notice",
             options: {
-                content: "this is a sample notice",
-                waitTime: 2000,
+                content: "This is a sample notice. It will disappear in 2 seconds.",
+                timing: [2000, 1000, 2500],
                 "class": "achievement"
             }
         },
-        "wait": {
-            actionName: "notice",
+        "alterStyles": {
+            actionName: "alterStyles",
             options: {
-                timeout:2000
+                target: "h4",
+                style: {'font-size':'25px', 'color': 'red', 'font-family': 'arial'},
+                applyTime:3000
             }
         }
     };
@@ -384,8 +378,16 @@
                 actionName: "notice",
                 options: {
                     content: "Congratulations you've completed the playlistjs tutorial.",
-                    waitTime: 2000,
+                    timing: [2000, 1500, 2500],
                     "class": "achievement"
+                }
+            },
+            {
+                actionName: "alterStyles",
+                options: {
+                    target: "button",
+                    style: {'background-color':'red'},
+                    applyTime:3000
                 }
             }
         ];

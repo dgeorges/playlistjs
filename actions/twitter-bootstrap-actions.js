@@ -1,4 +1,6 @@
-
+/**
+ * playlistjs Actions built ontop of twitter bootstrap.
+ */
 (function(define) {
     "use strict";
 define(['playlist', 'jQuery'], function(Playlist, $) {

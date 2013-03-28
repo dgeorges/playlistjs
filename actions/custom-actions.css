@@ -1,0 +1,9 @@
+
+.playlistjs-notice {
+    width: 75%;
+    border: 1px solid black;
+    padding: 4px;
+    text-align: center;
+    background-color: rgba(55, 235, 55, .8);
+    margin: 0 auto;
+}
