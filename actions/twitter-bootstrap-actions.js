@@ -70,12 +70,12 @@ define(['playlist', 'jQuery'], function(Playlist, $) {
 
         this._modalOptions = options.modalOptions;
         this._widget = widget;
-        Actionable.call(this);
+        Actionable.call(this, options);
     }
     ModalAction.prototype = Object.create(Actionable.prototype);
     Playlist.registerAction("modal", ModalAction);
 
-    ModalAction.prototype.execute = function (value) {
+    ModalAction.prototype.begin = function (value) {
         this._widget.modal(this._modalOptions);
     };
 
@@ -120,14 +120,13 @@ define(['playlist', 'jQuery'], function(Playlist, $) {
         this._uuid = options.popoverId || "" +  Date.now();
         this._widget = widget;
         this._popoverOptions = options.popoverOptions;
-        this._options = options;
-        Actionable.call(this);
+        Actionable.call(this, options);
     }
     PopoverAction.prototype = Object.create(Actionable.prototype);
     Playlist.registerAction("popover", PopoverAction);
 
 
-    PopoverAction.prototype.execute = function (value) {
+    PopoverAction.prototype.begin = function (value) {
         if (this._options.closeable && this._popoverOptions.html) {
             var close = $("<a/>", {"class": "close", "html": "&times;", "data-popover-id": this._uuid});
             if (this._popoverOptions.title) {
@@ -189,15 +188,14 @@ define(['playlist', 'jQuery'], function(Playlist, $) {
             that.complete(true);
         });
 
-        this._options = options;
         this._widget = widget;
         this._alert = widget.alert();
-        Actionable.call(this);
+        Actionable.call(this, options);
     }
     AlertAction.prototype = Object.create(Actionable.prototype);
     Playlist.registerAction("alert", AlertAction);
 
-    AlertAction.prototype.execute = function (value) {
+    AlertAction.prototype.begin = function (value) {
         var that = this;
         $(this._options.target).prepend(this._widget);
 

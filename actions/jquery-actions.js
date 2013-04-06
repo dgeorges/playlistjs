@@ -1,8 +1,5 @@
 /**
- * Library to overlay a HTML5 application with helpful information like
- * How to's, tutorials, did you know's etc...
- *
- * *We need a promise library
+ * playlistjs Actions built ontop of jquery ui.
  */
 (function(define) {
     "use strict";
@@ -39,12 +36,12 @@ define(['playlist', 'jQuery'], function(Playlist, $) {
         //todo prevent something?
         this._dialogOptions = options.dialogOptions;
         this._widget = widget;
-        Actionable.call(this);
+        Actionable.call(this, options);
     }
     DialogAction.prototype = Object.create(Actionable.prototype);
     Playlist.registerAction("dialog", DialogAction);
 
-    DialogAction.prototype.execute = function (value) {
+    DialogAction.prototype.begin = function (value) {
         this._widget.dialog(this._dialogOptions);
     };
 

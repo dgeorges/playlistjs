@@ -15,25 +15,43 @@ define(['when/when', 'when/pipeline', 'when/parallel'], function(when, pipeline,
      * execute method can do whatever it want synchronously or asynchronously. As long as either
      * complete or fail are eventually called to indicate the end of the action.
      */
-    function Actionable () {
+    function Actionable (options) {
         this._deferred = when.defer();
+        this._options = options || {};
     }
 
     /** May be overridden but override should always invoke parent */
     Actionable.prototype.complete = function (results) {
         // fulfill the promise
+        this.endAction();
         this._deferred.resolve(results);
     };
 
     /** May be overridden but override should always invoke parent */
     Actionable.prototype.fail = function (error) {
         // fail the promise
+        this.endAction();
         this._deferred.reject(error);
     };
 
-    Actionable.prototype.doAction = function (value) {
-        this.execute(value);
+    Actionable.prototype.startAction = function (value) {
+        this.begin(value);
+
+        if (typeof this._options.onBegin === 'function') {
+            this._options.onBegin(this);
+        }
+
         return this._deferred.promise;
+    };
+
+    Actionable.prototype.endAction = function (value) {
+        if (this.end) {
+            this.end(value);
+        }
+
+        if (typeof this._options.onEnd === 'function') {
+            this._options.onEnd(this);
+        }
     };
 
     /**
@@ -41,11 +59,11 @@ define(['when/when', 'when/pipeline', 'when/parallel'], function(when, pipeline,
      * @type {Object}
      */
     var actionables = {};
-    function registerAction(name, actionable){
+    function registerAction (name, actionable) {
         actionables[name] = actionable;
     }
 
-    function getActions (name, actionable){
+    function getActions () {
         return actionables;
     }
 
@@ -65,6 +83,7 @@ define(['when/when', 'when/pipeline', 'when/parallel'], function(when, pipeline,
     function onError(e) {
         throw new Error("error executing Actionable");
     }
+
 
     function createActionable (obj) {
         if (obj instanceof Actionable) {
@@ -94,6 +113,8 @@ define(['when/when', 'when/pipeline', 'when/parallel'], function(when, pipeline,
         this._start.resolve(true);
     };
 
+    //Playlist.prototype.stop = function () {}; //TODO
+
     function createSyncronizedPlaylist (descriptor) {
         var defered = when.defer();
         var promise = defered.promise;
@@ -110,7 +131,7 @@ define(['when/when', 'when/pipeline', 'when/parallel'], function(when, pipeline,
                 if (!action) {
                     throw new Error("incorrect syntax");
                 }
-                return action.doAction.bind(action);
+                return action.startAction.bind(action);
             }
         });
         promise = promise.then(function (value) {
@@ -139,7 +160,7 @@ define(['when/when', 'when/pipeline', 'when/parallel'], function(when, pipeline,
                 if (!action) {
                     throw new Error("incorrect syntax");
                 }
-                actions.push(action.doAction.bind(action));
+                actions.push(action.startAction.bind(action));
             }
         });
         promise = promise.then(function (value) {

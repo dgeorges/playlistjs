@@ -8,7 +8,7 @@
     <meta name="author" content="Daniel Georges">
 
     <!-- Le styles -->
-    <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
     <style type="text/css">
 
       /* Custom container */
@@ -43,7 +43,7 @@
         background-color: initial;
       }
     </style>
-    <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-responsive.min.css" rel="stylesheet">
 
     <!-- jquery ui css -->
     <link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="stylesheet">
@@ -68,7 +68,7 @@
 
       <div class="jumbotron">
         <h1>Build web tutorials in seconds!</h1>
-        <p class="lead">Unlock the full potential of you application by training your users to use your application the way it was ment to be used.</p>
+        <p class="lead">Unlock the full potential of you application by training your users to use your application the way it was meant to be used.</p>
         <div class="btn btn-large btn-success" onClick="executeDemo()">See Demo</div>
       </div>
 
@@ -77,7 +77,7 @@
         <div class="span6">
 
           <h4>Actions</h4>
-          <select id="action-list" size="10" onClick="">
+          <select id="action-list" size="10">
           </select>
           <br/>
           <button type="button" id="seeAction" onClick="playSelectedAction()">See Action</button>
@@ -110,7 +110,7 @@
       <hr>
 
       <div class="footer">
-        <p>&copy; 2013 - <a href="#" target="_blank">Daniel Georges</a></p>
+        <p>&copy; 2013 - <a href="https://twitter.com/dgeorges1" target="_blank">Daniel Georges</a></p>
       </div>
 
     </div> <!-- /container -->
@@ -131,7 +131,7 @@
     <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 
     <!-- twitter bootstrap -->
-    <script src="http://twitter.github.com/bootstrap/assets/js/bootstrap.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
 
     <!-- playlistjs actions -->
     <script src="../actions/twitter-bootstrap-actions.js"></script>
@@ -232,6 +232,24 @@
                 style: {'font-size':'25px', 'color': 'red', 'font-family': 'arial'},
                 applyTime:3000
             }
+        },
+        "CustomElement": {
+            actionName: "CustomElement",
+            options: {
+                onBegin: function (action) {
+                    $("#action-list").one("click", function () {
+                        action.complete();
+                    })
+                },
+                target: "body",
+                content: function () {
+                    button = $("<div/>", {"class": "btn", style: "position:fixed; top:30px; left:30px", text: "click me to exit"});
+                    button.on("click", function () {
+                        button.trigger("playlistjs-complete");
+                    })
+                    return button;
+                }
+            }
         }
     };
 
@@ -265,11 +283,24 @@
     }
 
     function executeDemo () {
-        var demoDescriptor = [
-            {
+        var demoDescriptor = [{
+            "exitButton": {
+                actionName: "CustomElement",
+                options: {
+                    target: "body",
+                    content: function () {
+                        button = $("<div/>", {"class": "btn", "style":"position:fixed; top:30px; left:30px", text: "click me to exit"});
+                        button.on("click", function () {
+                            button.trigger("playlistjs-fail");
+                        })
+                        return button;
+                    }
+                }
+            },
+            "tutorial": [{
                 actionName: "dialog",
                 options: {
-                    content:"Welcome to my tutorial of playlistjs",
+                    content:"Welcome to my tutorial of playlistjs. Built using playlistjs of course.",
                     title: "Welcome",
                     dialogOptions : {
                         buttons: [{
@@ -285,7 +316,7 @@
             {
                 actionName: "dialog",
                 options: {
-                    content:"playlistjs is a small library which you can create your own actions and string them together in a asynchronous control flow. It does this by using the concept of promises from the cujojs when library.",
+                    content:"playlistjs is a small library which you can create your own actions and string them together in a synchronous or asynchronous control flow. This dialog is an action we move onto the next action in the playlist when the action is determined to be complete. In this case clicking the next button.",
                     title: "What is playlistjs?",
                     dialogOptions: {
                         buttons: [{
@@ -389,8 +420,8 @@
                     style: {'background-color':'red'},
                     applyTime:3000
                 }
-            }
-        ];
+            }]
+        }];
 
         var playlist = Playlist.createPlaylist(demoDescriptor);
         playlist.play();
