@@ -4,6 +4,7 @@
     border: 1px solid black;
     padding: 4px;
     text-align: center;
-    background-color: rgba(55, 235, 55, .8);
+    background-color: #000000;
+    color: #FFFFFF;
     margin: 0 auto;
 }

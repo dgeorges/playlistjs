@@ -23,7 +23,7 @@ define(['playlist', 'jQuery'], function(Playlist, $) {
         var that = this;
         setTimeout(function () {
             that.complete("start!" + value);
-        }, this._options.timeout);
+        }, this._options.time);
     };
 
 

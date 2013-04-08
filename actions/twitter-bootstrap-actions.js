@@ -52,15 +52,16 @@ define(['playlist', 'jQuery'], function(Playlist, $) {
             widget.append(body);
         }
 
-        if (contentProvider.getFooter) {
+        if (contentProvider.getFooter || options.dismissBtnText) {
             var footer = $("<div/>", {"class": "modal-footer"});
-            footer.append(contentProvider.getFooter());
+            if(contentProvider.getFooter) {
+                footer.append(contentProvider.getFooter());
+            }
+
             if(options.dismissBtnText) {
                 footer.append(createDismissButton());
             }
             widget.append(footer);
-        } else if (options.dismissBtnText) {
-            widget.append(createDismissButton());
         }
 
         widget.on("hidden", function () {
